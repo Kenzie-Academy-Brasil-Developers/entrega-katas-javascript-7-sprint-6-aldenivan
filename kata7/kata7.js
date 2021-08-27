@@ -1,5 +1,3 @@
-// newForEach, newFill, newMap, newSome, newFind, newFindIndex, newEvery, newFilter, newConcat, newIncludes, newIndexOf, newJoin, newReduce
-
 function myCallbackMultyply(value) {
 
     return value * 2;
@@ -17,12 +15,14 @@ function myCallbackAdition(value, valueTwo) {
 
 function myCallbackModificationArr(array, value, index) {
 
+    console.log()
     return array[index] = value;
 }
 
 let myArr = [6, 8, 18, 32];
 let myArrNumber = [2, 5, 9];
 let myArrString = ['Fire', 'Air', 'Water'];
+let myArrModification = [2, 6, 4, 6, 7, 8, 7, 9, 10]
 
 function newForEach(array, callback) {
 
@@ -34,6 +34,51 @@ function newForEach(array, callback) {
 
 let returnForEach = myArr.forEach(myCallbackMultyply);
 let returnNewForEach = newForEach(myArr, myCallbackMultyply);
+
+
+
+function newFill(array, value, initialValue, finishValue) {
+
+    for(let i = 0; i < array.length; i++) {
+
+        if(typeof initialValue === "number" && typeof finishValue === "number") {
+            
+            if(finishValue < 0 && initialValue < finishValue && i >= (array.length + initialValue) && i < (array.length + finishValue)) {
+
+                myCallbackModificationArr(array ,value, i);
+            }
+
+            if(initialValue > 0 && finishValue > initialValue && i >= initialValue && i < finishValue) {
+            
+                myCallbackModificationArr(array ,value, i);
+            }    
+        }
+
+        if(typeof initialValue === "number" && finishValue === undefined) {
+
+            if(initialValue < 0 && i >= (array.length + initialValue) && i < finishValue) {
+            
+                myCallbackModificationArr(array ,value, i);
+            }
+
+            if(initialValue > 0 && i >= initialValue) {
+            
+                myCallbackModificationArr(array ,value, i);
+            }
+        }
+    
+        if(initialValue > 0 && finishValue < 0 && i < (array.length + finishValue) && i >= initialValue) {
+
+            myCallbackModificationArr(array ,value, i);
+        }       
+    }
+
+    return array;
+}   
+
+let returnFill = myArrModification.fill(6, -3, -1);
+let returnNewFill = newFill(myArrModification, 8, -3, -1);
+
 
 
 function newMap(array, callback) {
@@ -54,6 +99,7 @@ let returnMap = myArr.map(myCallbackMultyply);
 let returnNewMap = newMap(myArr, myCallbackMultyply);
 
 
+
 function newSome(array, callback) {
 
     for(let i = 0; i < array.length; i++) {
@@ -69,6 +115,8 @@ function newSome(array, callback) {
 
 let returnSome = myArr.some(myCallbackBoolean);
 let returnNewSome = newSome(myArr, myCallbackBoolean);
+
+
 
 function newFind(array, callback) {
 
@@ -86,6 +134,8 @@ function newFind(array, callback) {
 let returnFind = myArr.find(myCallbackBoolean);
 let returnNewFind = newFind(myArr, myCallbackBoolean);
 
+
+
 function newFindIndex(array, callback) {
 
     for(let i = 0; i < array.length; i++) {
@@ -102,6 +152,8 @@ function newFindIndex(array, callback) {
 let returnFindIndex = myArr.findIndex(myCallbackBoolean);
 let returnNewFindIndex = newFindIndex(myArr, myCallbackBoolean);
 
+
+
 function newEvery(array, callback) {
 
     for(let i = 0; i < array.length; i++) {
@@ -117,6 +169,8 @@ function newEvery(array, callback) {
 
 let returnEvery = myArr.every(myCallbackBoolean);
 let returnNewEvery = newEvery(myArr, myCallbackBoolean);
+
+
 
 function newFilter(array, callback) {
 
@@ -136,9 +190,35 @@ function newFilter(array, callback) {
 let returnFilter = myArr.filter(myCallbackBoolean);
 let returnNewFilter = newFilter(myArr, myCallbackBoolean);
 
-// function newConcat() {
 
-// }
+
+function newConcat(parameters) {
+
+    let newArray = [];
+
+    for(let i = 0; i < arguments.length; i++) {
+
+        if(typeof arguments[i] === "object") {
+            
+            for(let j = 0; j < arguments[i].length; j++) {
+
+                newArray.push(arguments[i][j]);
+            }
+        } 
+        
+        else {
+
+            newArray.push(arguments[i])
+        } 
+    }
+
+    return newArray;
+}
+
+let returnConcat = myArr.concat([2, 1, 6], 4, "a");
+let returnNewConcat = newConcat(myArr, [2, 1, 6], 4, "a");
+    
+
 
 function newIncludes(array, element, index) {
 
@@ -167,6 +247,8 @@ function newIncludes(array, element, index) {
 
 let returnIncludes = myArr.includes(myCallbackBoolean);
 let returnNewIncludes = newIncludes(myArr, myCallbackBoolean, 3);
+
+
 
 function newIndexOf(array, value, index) {
 
@@ -198,6 +280,8 @@ function newIndexOf(array, value, index) {
 let returnIndexOf = myArrNumber.indexOf(2, -3);
 let returnNewIndexOf = newIndexOf(myArrNumber, 2, -3);
 
+
+
 function newJoin(array, separetor) {
     
     let newString = "";
@@ -226,6 +310,8 @@ function newJoin(array, separetor) {
 let returnJoin = myArrString.join("-");
 let returnNewJoin = newJoin(myArrString, "-");
 
+
+
 function newReduce(array, callback) {
 
     let acumulador = 0;
@@ -241,62 +327,3 @@ function newReduce(array, callback) {
 
 let returnReduce = myArr.reduce((acc, item) => acc + item);
 let returnNewReduce = newReduce(myArr, myCallbackAdition);
-
-
-function newFill(array, value, initialValue, finishValue) {
-
-    if(finishValue < 0 && initialValue < finishValue) {
-            
-        for(let i = (array.length + initialValue); i < (array.length + finishValue); i++) {
-
-            myArr[i] = myCallbackModificationArr(myArr ,value, i);
-        }
-    }
-   
-    if(initialValue < 0) {
-
-        for(let i = (array.length + initialValue); i < array.length; i++) {
-
-            myArr[i] = myCallbackModificationArr(myArr ,value, i);
-        }
-    }
-   
-    if(finishValue < 0) {
-
-        for(let i = 0; i < (array.length + finishValue); i++) {
-
-            myArr[i] = myCallbackModificationArr(myArr ,value, i);
-        }
-    }
-
-    else {
-
-        for(let i = 0; i < array.length; i++) {
-
-            if(initialValue > 0 && finishValue > initialValue && i >= initialValue && i < finishValue) {
-                
-                myArr[i] = myCallbackModificationArr(myArr ,value, i);
-            }
-
-            if(initialValue > 0 ) {
-               
-                myArr[i] = myCallbackModificationArr(myArr ,value, i);
-            }
-
-            if(finishValue > 0) {
-                
-                myArr[i] = myCallbackModificationArr(myArr ,value, i);
-            } 
-
-            else {
-                
-                myArr[i] = myCallbackModificationArr(myArr ,value, i);
-            }
-        }
-    }
-
-    return myArr;
-}   
-
-let returnFill = myArr.fill(4, -1, 0);
-let returnNewFill = newFill(myArr, 4, -1, 0);
